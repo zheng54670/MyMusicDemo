@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.example.mymusicdemo.views.WEqualsHImageView
+            android:id="@+id/rv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right|center_vertical"
+            android:layout_margin="@dimen/marginAlbumSize">
+            <ImageView
+                android:layout_width="@dimen/playNumImgSize"
+                android:layout_height="@dimen/playNumImgSize"
+                android:src="@mipmap/play_num"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10万"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/marginAlbumSize"/>
+
+        </LinearLayout>
+    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="歌单名称"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/textSize"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+</LinearLayout>
