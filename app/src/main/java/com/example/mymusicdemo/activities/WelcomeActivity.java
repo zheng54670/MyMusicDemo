@@ -47,7 +47,7 @@ public class WelcomeActivity extends BaseActivity {
      * 跳转到MainActivity
      */
     private void toMain() {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -56,7 +56,7 @@ public class WelcomeActivity extends BaseActivity {
      * 跳转到LoginActivity
      */
     private void toLogin() {
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

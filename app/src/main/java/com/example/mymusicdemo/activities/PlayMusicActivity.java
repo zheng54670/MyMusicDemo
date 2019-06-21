@@ -25,19 +25,19 @@ public class PlayMusicActivity extends BaseActivity {
         setContentView(R.layout.activity_play_music);
 
         //隐藏statusBar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initView();
 
     }
 
-    private void initView(){
+    private void initView() {
         mIvBg = findViewById(R.id.iv_bg);
         //glide-transformations图片的高斯模糊
         //引入网络图片
         Glide.with(this)
                 .load("http://res.lgdsunday.club/poster-1.png")
-                .apply(RequestOptions.bitmapTransform(new BlurTransformation(25,10)))
+                .apply(RequestOptions.bitmapTransform(new BlurTransformation(25, 10)))
                 .into(mIvBg);
         mPlayMusicView = findViewById(R.id.play_music_view);
         mPlayMusicView.setMusicIcon("http://res.lgdsunday.club/poster-1.png");
@@ -48,7 +48,7 @@ public class PlayMusicActivity extends BaseActivity {
     /**
      * 后退按钮点击事件
      */
-    public void onBackClick(View view){
+    public void onBackClick(View view) {
         onBackPressed();
     }
 }

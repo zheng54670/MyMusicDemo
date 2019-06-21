@@ -14,6 +14,7 @@ public class AlbumListActivity extends BaseActivity {
 
     private RecyclerView mRvList;
     private MusicLinearAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,12 +24,12 @@ public class AlbumListActivity extends BaseActivity {
     }
 
     private void initView() {
-        initNavBar(true,"专辑列表",false);
+        initNavBar(true, "专辑列表", false);
 
         mRvList = findViewById(R.id.rv_album);
-        mRvList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL ));
+        mRvList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRvList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new MusicLinearAdapter(this,null);
+        mAdapter = new MusicLinearAdapter(this, null);
         mRvList.setAdapter(mAdapter);
     }
 

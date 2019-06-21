@@ -16,6 +16,6 @@ public class ChangePasswordActivity extends BaseActivity {
     }
 
     private void initView() {
-        initNavBar(true,"修改密码",false);
+        initNavBar(true, "修改密码", false);
     }
 }

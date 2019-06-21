@@ -36,7 +36,7 @@ public class LoginActivity extends BaseActivity {
 
     public void onStartRegisterClick(View view) {
 
-        Intent intent = new Intent(this,RegisterActivity.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity {
 //            return;
 //        }
 //        跳转到应用主页
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

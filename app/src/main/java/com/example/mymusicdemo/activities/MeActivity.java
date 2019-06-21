@@ -21,7 +21,7 @@ public class MeActivity extends BaseActivity {
     }
 
     private void initView() {
-        initNavBar(true,"个人中心",false);
+        initNavBar(true, "个人中心", false);
     }
 
 
@@ -29,9 +29,9 @@ public class MeActivity extends BaseActivity {
      * 修改密码点击事件
      */
 
-    public void onPasswordChangeClick(View view){
+    public void onPasswordChangeClick(View view) {
 
-        startActivity(new Intent(this,ChangePasswordActivity.class));
+        startActivity(new Intent(this, ChangePasswordActivity.class));
     }
 
 
@@ -39,7 +39,7 @@ public class MeActivity extends BaseActivity {
      * 退出登录点击事件
      */
 
-    public void onLoginOutClick(View view){
+    public void onLoginOutClick(View view) {
 
         UserUtils.logout(this);
 

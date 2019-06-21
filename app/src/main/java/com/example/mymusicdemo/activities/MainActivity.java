@@ -32,8 +32,8 @@ public class MainActivity extends BaseActivity {
         //取消RecyclerView自带滑动
         mRvGrid.setNestedScrollingEnabled(false);
         //加入RecyclerView分割线
-        mRvGrid.addItemDecoration(new GridSpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.marginAlbumSize),mRvGrid));
-        mRvGrid.setLayoutManager(new GridLayoutManager(this,3));
+        mRvGrid.addItemDecoration(new GridSpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.marginAlbumSize), mRvGrid));
+        mRvGrid.setLayoutManager(new GridLayoutManager(this, 3));
         mRvGrid.setAdapter(new MusicGridAdapter(this));
 
         /**
@@ -45,8 +45,8 @@ public class MainActivity extends BaseActivity {
         mRvLinear.setNestedScrollingEnabled(false);
 
         //加入RecyclerView分割线
-        mRvLinear.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRvLinear.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRvLinear.setLayoutManager(new LinearLayoutManager(this));
-        mRvLinear.setAdapter(new MusicLinearAdapter(this,mRvLinear));
+        mRvLinear.setAdapter(new MusicLinearAdapter(this, mRvLinear));
     }
 }
