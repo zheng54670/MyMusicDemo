@@ -19,7 +19,6 @@ public class BaseActivity extends Activity {
 
     /**
      * 初始化NavigationBar
-     *
      * @param isShowBack
      * @param title
      * @param isShowMe
