@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.example.mymusicdemo.R;
 import com.example.mymusicdemo.activities.LoginActivity;
 import com.example.mymusicdemo.helps.RealmHelp;
+import com.example.mymusicdemo.helps.UserHelp;
 import com.example.mymusicdemo.models.UserModel;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserUtils {
      * 验证登录用户输入合法性
      */
 
-    public static boolean validataLogin(Context context, String phone, String password) {
+    public static boolean validateLogin(Context context, String phone, String password) {
 
         //简单手机号码
 //        RegexUtils.isMobileSimple(phone);
@@ -36,6 +37,30 @@ public class UserUtils {
             return false;
         }
 
+        /**
+         * 1、判断当前手机号是否是已经注册的
+         * 2、用户输入的密码是否匹配
+         */
+        if (!UserUtils.userExitOrNot(phone)) {
+            Toast.makeText(context, "手机号未注册", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        RealmHelp realmHelp = new RealmHelp();
+        boolean result = realmHelp.validateUser(phone, EncryptUtils.encryptMD5ToString(password));
+        realmHelp.close();
+        if (!result){
+            Toast.makeText(context, "手机号或密码不正确！", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+//        保存用户登录标记
+        boolean isSave = SharePreferencesUtils.saveUser(context,phone);
+        if (!isSave){
+            Toast.makeText(context, "系统错误，请稍后重试", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+//      保存用户标记，在单例类中
+        UserHelp.getInstance().setPhone(phone);
         return true;
     }
 
@@ -43,6 +68,16 @@ public class UserUtils {
      * 退出登录
      */
     public static void logout(Context context) {
+
+//        删除SharedPreferences里保存的标记
+        boolean isRemove = SharePreferencesUtils.removeUser(context);
+        if (!isRemove){
+            Toast.makeText(context, "系统错误，请稍后重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
         Intent intent = new Intent(context, LoginActivity.class);
 //        添加intent标志符，清理task栈，并新生成一个task栈
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -120,7 +155,16 @@ public class UserUtils {
             }
         }
 
+        realmHelp.close();
         return result;
+    }
+
+    /**
+     * 验证是否存在已登录用户
+     */
+
+    public static boolean validateUserLogin(Context context){
+        return SharePreferencesUtils.isLoginUser(context);
     }
 
 }
