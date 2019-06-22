@@ -167,4 +167,41 @@ public class UserUtils {
         return SharePreferencesUtils.isLoginUser(context);
     }
 
+    /**
+     * 修改密码
+     * 1、数据验证
+     *      1、原密码是否输入
+     *      2、新密码是否输入且新密码与确认密码是否相同
+     *      3、原密码是否输入正确
+     *          1、Realm数据库中获取到当前登录的用户模型
+     *          2、根据用户模型中保存的密码匹配用户原密码
+     * 2、利用Realm模型自动更新特性来完成密码的修改
+     */
+    public static boolean changePassword(Context context, String oldPassword, String password, String passwordConfirm){
+
+        if (TextUtils.isEmpty(oldPassword)) {
+            Toast.makeText(context, "原密码不能为空！", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(password) || !password.equals(passwordConfirm)) {
+            Toast.makeText(context, "请确认密码！", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+//        验证原密码是否正确
+        RealmHelp realmHelp = new RealmHelp();
+        UserModel userModel = realmHelp.getUser();
+
+        if (!EncryptUtils.encryptMD5ToString(oldPassword).equals(userModel.getPassword())){
+            Toast.makeText(context, "原密码不正确！", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        realmHelp.changePasswod(EncryptUtils.encryptMD5ToString(password));
+
+        realmHelp.close();
+
+        return true;
+
+    }
+
+
 }

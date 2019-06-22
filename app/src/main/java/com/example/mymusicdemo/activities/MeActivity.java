@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.mymusicdemo.R;
+import com.example.mymusicdemo.helps.UserHelp;
 import com.example.mymusicdemo.utils.UserUtils;
 
 public class MeActivity extends BaseActivity {
+
+    private TextView mTvUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,8 @@ public class MeActivity extends BaseActivity {
 
     private void initView() {
         initNavBar(true, "个人中心", false);
+        mTvUser = findViewById(R.id.tv_user);
+        mTvUser.setText("用户名" + UserHelp.getInstance().getPhone());
     }
 
 
