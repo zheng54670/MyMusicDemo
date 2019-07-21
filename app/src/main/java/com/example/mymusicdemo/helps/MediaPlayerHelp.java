@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class MediaPlayerHelp {
 
-    private static MediaPlayerHelp instanse;
+    private static MediaPlayerHelp instance = null;
     private Context mContext;
     private MediaPlayer mMediaPlayer;
     private String mPath;
@@ -18,17 +18,18 @@ public class MediaPlayerHelp {
         this.onMediaPlayerHelperListener = onMediaPlayerHelperListener;
     }
 
-    public static  MediaPlayerHelp getInstance(Context context){
-        if (instanse == null){
-            synchronized (MediaPlayerHelp.class){
-                if (instanse == null){
-                    instanse = new MediaPlayerHelp(context);
+    public static MediaPlayerHelp getInstance(Context context) {
+        if (instance == null) {
+            synchronized (MediaPlayerHelp.class) {
+                if (instance == null) {
+                    instance = new MediaPlayerHelp(context);
                 }
             }
         }
 
-        return instanse;
+        return instance;
     }
+
     private MediaPlayerHelp(Context context) {
         mContext = context;
         mMediaPlayer = new MediaPlayer();
@@ -44,7 +45,7 @@ public class MediaPlayerHelp {
      * 1、setPath：获取音乐的路径
      */
 
-    public void setPath(String path){
+    public void setPath(String path) {
         /**
          * 1、音乐正在播放，重置音乐播放状态
          * 2、设置播放音乐路径
@@ -53,7 +54,7 @@ public class MediaPlayerHelp {
 
         mPath = path;
         //1、音乐正在播放，重置音乐播放状态
-        if (mMediaPlayer.isPlaying()){
+        if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.reset();
         }
 
@@ -69,7 +70,7 @@ public class MediaPlayerHelp {
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                if (onMediaPlayerHelperListener != null){
+                if (onMediaPlayerHelperListener != null) {
                     onMediaPlayerHelperListener.onPrepared(mp);
                 }
             }
@@ -79,28 +80,31 @@ public class MediaPlayerHelp {
 
     /**
      * 返回正在播放的音乐的路径
+     *
      * @return
      */
-    public String getPath(){
+    public String getPath() {
         return mPath;
     }
+
     /**
      * 2、start：播放音乐
      */
-    public void start(){
-        if (mMediaPlayer.isPlaying()){
+    public void start() {
+        if (mMediaPlayer.isPlaying()) {
             return;
         }
         mMediaPlayer.start();
     }
 
     /**
-     *3、pause：暂停播放
+     * 3、pause：暂停播放
      */
-    public void pause(){
+    public void pause() {
         mMediaPlayer.pause();
     }
-    public interface OnMediaPlayerHelperListener{
+
+    public interface OnMediaPlayerHelperListener {
         void onPrepared(MediaPlayer mp);
     }
 }
