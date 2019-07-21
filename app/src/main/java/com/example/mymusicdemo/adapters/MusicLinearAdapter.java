@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mymusicdemo.R;
 import com.example.mymusicdemo.activities.PlayMusicActivity;
+import com.example.mymusicdemo.models.MusicModel;
+
+import java.util.List;
 
 public class MusicLinearAdapter extends RecyclerView.Adapter<MusicLinearAdapter.ViewHolder> {
 
@@ -21,10 +25,12 @@ public class MusicLinearAdapter extends RecyclerView.Adapter<MusicLinearAdapter.
     private View mItemView;
     private RecyclerView mRv;
     private boolean isCalculationRvHeight;
+    private List<MusicModel> mDataSource;
 
-    public MusicLinearAdapter(Context context, RecyclerView recyclerView) {
+    public MusicLinearAdapter(Context context, RecyclerView recyclerView,List<MusicModel> mDataSource) {
         mContext = context;
         mRv = recyclerView;
+        this.mDataSource = mDataSource;
     }
 
     @NonNull
@@ -39,15 +45,19 @@ public class MusicLinearAdapter extends RecyclerView.Adapter<MusicLinearAdapter.
 
         setRecyclerVIewHeight();
 
+        final MusicModel musicModel = mDataSource.get(i);
         //引入网络图片
         Glide.with(mContext)
-                .load("http://res.lgdsunday.club/poster-1.png")
+                .load(musicModel.getPoster())
                 .into(viewHolder.ivIcon);
 
+        viewHolder.mTvName.setText(musicModel.getName());
+        viewHolder.mTvAuthor.setText(musicModel.getAuthor());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, PlayMusicActivity.class);
+                intent.putExtra(PlayMusicActivity.MUSIC_ID,musicModel.getMusicId());
                 mContext.startActivity(intent);
             }
         });
@@ -57,7 +67,7 @@ public class MusicLinearAdapter extends RecyclerView.Adapter<MusicLinearAdapter.
 
     @Override
     public int getItemCount() {
-        return 8;
+        return mDataSource.size();
     }
 
     /**
@@ -92,11 +102,15 @@ public class MusicLinearAdapter extends RecyclerView.Adapter<MusicLinearAdapter.
 
         View itemView;
         ImageView ivIcon;
+        TextView mTvName,mTvAuthor;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             this.itemView = itemView;
             ivIcon = itemView.findViewById(R.id.iv_icon);
+            mTvName = itemView.findViewById(R.id.tv_name);
+            mTvAuthor = itemView.findViewById(R.id.tv_author);
         }
     }
 }

@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import com.example.mymusicdemo.R;
 import com.example.mymusicdemo.adapters.MusicGridAdapter;
 import com.example.mymusicdemo.adapters.MusicLinearAdapter;
+import com.example.mymusicdemo.helps.RealmHelp;
+import com.example.mymusicdemo.models.MusicSourceModel;
 import com.example.mymusicdemo.views.GridSpaceItemDecoration;
 
 public class MainActivity extends BaseActivity {
@@ -18,12 +20,25 @@ public class MainActivity extends BaseActivity {
 
     private RecyclerView mRvGrid, mRvLinear;
 
+    private RealmHelp mRealmHelp;
+    private MusicSourceModel mMusicSourceModel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initData();
+
         initView();
+    }
+
+    private void initData(){
+        mRealmHelp = new RealmHelp();
+        mMusicSourceModel = mRealmHelp.getMusicSource();
+
+
     }
 
     private void initView() {
@@ -34,7 +49,7 @@ public class MainActivity extends BaseActivity {
         //加入RecyclerView分割线
         mRvGrid.addItemDecoration(new GridSpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.marginAlbumSize), mRvGrid));
         mRvGrid.setLayoutManager(new GridLayoutManager(this, 3));
-        mRvGrid.setAdapter(new MusicGridAdapter(this));
+        mRvGrid.setAdapter(new MusicGridAdapter(this,mMusicSourceModel.getAlbum()));
 
         /**
          * 1、已知列表高度的情况下，可以直接在布局中把RecyclerView的高度定义上
@@ -47,6 +62,12 @@ public class MainActivity extends BaseActivity {
         //加入RecyclerView分割线
         mRvLinear.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRvLinear.setLayoutManager(new LinearLayoutManager(this));
-        mRvLinear.setAdapter(new MusicLinearAdapter(this, mRvLinear));
+        mRvLinear.setAdapter(new MusicLinearAdapter(this, mRvLinear,mMusicSourceModel.getHot()));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRealmHelp.close();
     }
 }

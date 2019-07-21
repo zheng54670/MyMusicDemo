@@ -48,19 +48,25 @@ public class UserUtils {
 
         RealmHelp realmHelp = new RealmHelp();
         boolean result = realmHelp.validateUser(phone, EncryptUtils.encryptMD5ToString(password));
-        realmHelp.close();
-        if (!result){
+
+        if (!result) {
             Toast.makeText(context, "手机号或密码不正确！", Toast.LENGTH_SHORT).show();
             return false;
         }
 //        保存用户登录标记
-        boolean isSave = SharePreferencesUtils.saveUser(context,phone);
-        if (!isSave){
+        boolean isSave = SharePreferencesUtils.saveUser(context, phone);
+        if (!isSave) {
             Toast.makeText(context, "系统错误，请稍后重试", Toast.LENGTH_SHORT).show();
             return false;
         }
-//      保存用户标记，在单例类中
+//      保存用户标记，在全局单例类中
         UserHelp.getInstance().setPhone(phone);
+
+//        保存音乐源数据
+        realmHelp.setMusicSource(context);
+
+        realmHelp.close();
+
         return true;
     }
 
@@ -71,11 +77,16 @@ public class UserUtils {
 
 //        删除SharedPreferences里保存的标记
         boolean isRemove = SharePreferencesUtils.removeUser(context);
-        if (!isRemove){
+        if (!isRemove) {
             Toast.makeText(context, "系统错误，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
         }
 
+
+//        删除数据源
+        RealmHelp realmHelp = new RealmHelp();
+        realmHelp.removeMusicSource();
+        realmHelp.close();
 
 
         Intent intent = new Intent(context, LoginActivity.class);
@@ -163,21 +174,21 @@ public class UserUtils {
      * 验证是否存在已登录用户
      */
 
-    public static boolean validateUserLogin(Context context){
+    public static boolean validateUserLogin(Context context) {
         return SharePreferencesUtils.isLoginUser(context);
     }
 
     /**
      * 修改密码
      * 1、数据验证
-     *      1、原密码是否输入
-     *      2、新密码是否输入且新密码与确认密码是否相同
-     *      3、原密码是否输入正确
-     *          1、Realm数据库中获取到当前登录的用户模型
-     *          2、根据用户模型中保存的密码匹配用户原密码
+     * 1、原密码是否输入
+     * 2、新密码是否输入且新密码与确认密码是否相同
+     * 3、原密码是否输入正确
+     * 1、Realm数据库中获取到当前登录的用户模型
+     * 2、根据用户模型中保存的密码匹配用户原密码
      * 2、利用Realm模型自动更新特性来完成密码的修改
      */
-    public static boolean changePassword(Context context, String oldPassword, String password, String passwordConfirm){
+    public static boolean changePassword(Context context, String oldPassword, String password, String passwordConfirm) {
 
         if (TextUtils.isEmpty(oldPassword)) {
             Toast.makeText(context, "原密码不能为空！", Toast.LENGTH_SHORT).show();
@@ -191,7 +202,7 @@ public class UserUtils {
         RealmHelp realmHelp = new RealmHelp();
         UserModel userModel = realmHelp.getUser();
 
-        if (!EncryptUtils.encryptMD5ToString(oldPassword).equals(userModel.getPassword())){
+        if (!EncryptUtils.encryptMD5ToString(oldPassword).equals(userModel.getPassword())) {
             Toast.makeText(context, "原密码不正确！", Toast.LENGTH_SHORT).show();
             return false;
         }

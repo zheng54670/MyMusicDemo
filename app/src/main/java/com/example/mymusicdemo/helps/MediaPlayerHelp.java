@@ -6,6 +6,12 @@ import android.net.Uri;
 
 import java.io.IOException;
 
+
+/**
+ * 1.直接在Activity中创建播放,与Activity绑定
+ * 2.通过全局单例类与application绑定
+ * 3.通过service进行音乐播放
+ */
 public class MediaPlayerHelp {
 
     private static MediaPlayerHelp instance = null;
@@ -52,11 +58,13 @@ public class MediaPlayerHelp {
          * 3、准备播放
          */
 
-        mPath = path;
-        //1、音乐正在播放，重置音乐播放状态
-        if (mMediaPlayer.isPlaying()) {
+
+        //1、音乐正在播放或者切换音乐，重置音乐播放状态
+        if (mMediaPlayer.isPlaying() || !path.equals(mPath)) {
             mMediaPlayer.reset();
         }
+
+        mPath = path;
 
         //2、设置播放音乐路径
         try {
@@ -72,6 +80,16 @@ public class MediaPlayerHelp {
             public void onPrepared(MediaPlayer mp) {
                 if (onMediaPlayerHelperListener != null) {
                     onMediaPlayerHelperListener.onPrepared(mp);
+                }
+            }
+        });
+
+        //监听音乐播放完成
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if (onMediaPlayerHelperListener != null){
+                    onMediaPlayerHelperListener.onCompletion(mp);
                 }
             }
         });
@@ -106,5 +124,6 @@ public class MediaPlayerHelp {
 
     public interface OnMediaPlayerHelperListener {
         void onPrepared(MediaPlayer mp);
+        void onCompletion(MediaPlayer mp);
     }
 }
